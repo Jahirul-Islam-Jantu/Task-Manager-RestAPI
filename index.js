@@ -41,3 +41,7 @@ app.use("/api", router)
 app.listen(PORT || 3333, ()=>{
     console.log("Server is running on port: 2020");
 })
+
+app.use("*", (req,res)=>{
+    res.status(404).send("Not Found");
+})

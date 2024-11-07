@@ -9,3 +9,9 @@
         * hpp (to manage security)
         * rate-limit (rate limit for set rate of)
         * helmet (helmet to manage security of app)
+    3. Index file configuration
+    4. Server run
+    5. User Model Creation
+    6. Tasks Model Creation
+    7. OTP model creation
+    8. Email utility
