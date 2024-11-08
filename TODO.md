@@ -16,3 +16,4 @@
     7. OTP model creation
     8. Email utility
     9. JWT Token Utility
+    10. User Controller
