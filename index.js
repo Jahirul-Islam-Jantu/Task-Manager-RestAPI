@@ -38,8 +38,8 @@ mongoose.connect(MongoDB_Connection, { user: "", pass: "",autoIndex: true}).then
 // routes
 app.use("/api", router)
 
-app.listen(PORT || 3333, ()=>{
-    console.log("Server is running on port: 2020");
+app.listen(PORT , ()=>{
+    console.log("Server is running on port: 3636");
 })
 
 app.use("*", (req,res)=>{

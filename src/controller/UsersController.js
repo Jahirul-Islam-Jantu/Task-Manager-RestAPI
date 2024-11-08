@@ -35,7 +35,13 @@ export const profileUpdate = (req, res) => {
 
 }
 export const profileDetails = (req, res) => {
-
+    try{
+        let email = req.headers['email']
+        let user = UserModel.find({email: email})
+        res.json({status: "success", data: user});
+    }catch(err){
+        res.json({status: "error", error: err});
+    }
 }
 export const verifyEmail = (req, res) => {
 
