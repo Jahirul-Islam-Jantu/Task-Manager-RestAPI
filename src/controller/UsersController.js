@@ -1,4 +1,5 @@
 import UserModel from "../model/UsersModel.js";
+import {EncodeToken} from "../utility/JWTTokenHelper.js";
 
 export const registration = async (req, res) => {
     try{
@@ -10,8 +11,22 @@ export const registration = async (req, res) => {
         res.json({status: "error", error: err});
     }
 }
-export const login = (req, res) => {
+export const login = async (req, res) => {
+    try{
+        let reqBody = req.body;
+        let user = await UserModel.find(reqBody)
+        if (user.length>0){
+            const token = EncodeToken(user[0].email, user[0]._id);
+            res.json({status: "success", message: "User registered successfully", token: token });
 
+        }else{
+            res.json({status: "failed", message: "User not found"});
+        }
+
+
+    }catch(err){
+        res.json({status: "error", error: err});
+    }
 }
 export const logOut = (req, res) => {
 
