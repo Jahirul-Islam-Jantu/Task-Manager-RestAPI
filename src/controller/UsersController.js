@@ -28,11 +28,15 @@ export const login = async (req, res) => {
         res.json({status: "error", error: err});
     }
 }
-export const logOut = (req, res) => {
-
-}
-export const profileUpdate = (req, res) => {
-
+export const profileUpdate = async (req, res) => {
+    try{
+        let email = req.headers['email']
+        let reqBody = req.body;
+        await UserModel.updateOne({email: email}, reqBody)
+        res.json({status: "success", message: "User updated successfully"});
+    }catch(err){
+        res.json({status: "error", error: err});
+    }
 }
 export const profileDetails = async (req, res) => {
     try{
@@ -42,6 +46,9 @@ export const profileDetails = async (req, res) => {
     }catch(err){
         res.json({status: "error", error: err});
     }
+}
+export const logOut = (req, res) => {
+
 }
 export const verifyEmail = (req, res) => {
 
