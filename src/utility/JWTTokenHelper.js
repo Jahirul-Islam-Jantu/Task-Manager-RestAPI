@@ -10,10 +10,10 @@ export const EncodeToken = (email, user_id) => {
 }
 
 export const DecodeToken = (token) => {
-    try{
-        const KEY = JWT_SECRET
-        return jwt.verify(token, KEY)
-    }catch(err){
-        return null
+    try {
+        const KEY = JWT_Secret; // Use JWT_Secret consistently
+        return jwt.verify(token, KEY);
+    } catch (err) {
+        return null;
     }
-}
+};

@@ -34,10 +34,10 @@ export const logOut = (req, res) => {
 export const profileUpdate = (req, res) => {
 
 }
-export const profileDetails = (req, res) => {
+export const profileDetails = async (req, res) => {
     try{
         let email = req.headers['email']
-        let user = UserModel.find({email: email})
+        let user = await UserModel.find({email: email})
         res.json({status: "success", data: user});
     }catch(err){
         res.json({status: "error", error: err});
