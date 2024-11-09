@@ -6,6 +6,7 @@ const dataSchema = mongoose.Schema  ({
     lastName: {type: String, required: true},
     mobile: {type: String, required: true},
     password: {type: String, required: true},
+    status: {type: String, required: true},
 }, {versionKey: false, timestamps: true});
 
 const UserModel = mongoose.model('users', dataSchema);

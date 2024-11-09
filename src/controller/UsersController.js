@@ -56,7 +56,7 @@ export const verifyEmail = async (req, res) => {
 
         let user = await UserModel.find({email: email})
         if(user.length > 0){
-            let otp = Math.floor(Math.random()*1000 + 9000);
+            let otp = Math.floor(Math.random()*100000 + 900000);
             let subject = "Password reset"
             let text = `Your password reset code is ${otp} . Please don't share this password with anyone.`
             await EmailSend(email, subject, text)
@@ -69,11 +69,36 @@ export const verifyEmail = async (req, res) => {
         res.json({ status: "error", error: err.message });
     }
 }
-export const verifyOTP = (req, res) => {
+export const verifyOTP = async (req, res) => {
+    try{
+        let {email, otp} = req.params
+        let user = await OTPModel.find({email: email, otp: otp, status: "success"})
+        if(user.length > 0){
 
+            await OTPModel.updateOne({email: email, otp: otp}, {status: "verified"})
+            res.json({status: "success", message: "OTP Verified"});
+        }
+    }
+    catch (err) {
+        console.error(err);
+        res.json({ status: "error", error: err.message });
+    }
 }
-export const passwordReset = (req, res) => {
+export const passwordReset =async (req, res) => {
+    try{
+        let {email, otp, password} = req.params
+        let user = await OTPModel.find({email: email, otp: otp, status: "verified"})
+        if(user.length > 0){
 
+            await OTPModel.deleteOne({email: email, otp: otp})
+            await UserModel.updateOne({email: email}, {password: password})
+            res.json({status: "success", message: "Password reset successfully"});
+        }
+    }
+    catch (err) {
+
+        res.json({ status: "error", error: err.message });
+    }
 }
 export const logOut = (req, res) => {
 
