@@ -1,16 +1,16 @@
 import sgMail from "@sendgrid/mail";
 
-export const EmailSend = ()=>{
+export const EmailSend = async (EmailTo, EmailSubject, EmailText)=>{
 
     sgMail.setApiKey(
-        "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"
+        "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"
     );
 
     const msg = {
-        to: "jahirulislamjantu@gmail.com",
+        to: EmailTo,
         from: "jahirulislamjantu@gmail.com", // Use a verified sender address
-        subject: "Test Email Subject",
-        text: "This email system is for API purpose. in this server i have used this from sendgrid mail.",
+        subject: EmailSubject,
+        text: EmailText,
     };
 
     sgMail

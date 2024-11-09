@@ -1,5 +1,7 @@
 import UserModel from "../model/UsersModel.js";
 import {EncodeToken} from "../utility/JWTTokenHelper.js";
+import {EmailSend} from "../utility/EmailUtility.js";
+import OTPModel from "../model/OTPModel.js";
 
 export const registration = async (req, res) => {
     try{
@@ -47,15 +49,32 @@ export const profileDetails = async (req, res) => {
         res.json({status: "error", error: err});
     }
 }
-export const logOut = (req, res) => {
 
-}
-export const verifyEmail = (req, res) => {
+export const verifyEmail = async (req, res) => {
+    try{
+        let {email} = req.params
 
+        let user = await UserModel.find({email: email})
+        if(user.length > 0){
+            let otp = Math.floor(Math.random()*1000 + 9000);
+            let subject = "Password reset"
+            let text = `Your password reset code is ${otp} . Please don't share this password with anyone.`
+            await EmailSend(email, subject, text)
+            await OTPModel.create({email: email, otp: otp, status: "success"})
+            res.json({status: "success", message: "OTP sent on Email successfully"});
+        }
+    }
+    catch (err) {
+        console.error(err);
+        res.json({ status: "error", error: err.message });
+    }
 }
 export const verifyOTP = (req, res) => {
 
 }
 export const passwordReset = (req, res) => {
+
+}
+export const logOut = (req, res) => {
 
 }

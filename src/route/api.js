@@ -10,7 +10,7 @@ router.post("/login", userController.login);
 router.get("/profileDetails", AuthMiddleware, userController.profileDetails);
 router.post("/profileUpdate",AuthMiddleware, userController.profileUpdate);
 
-router.post("/verifyEmail/:email", userController.verifyEmail);
+router.get("/verifyEmail/:email", userController.verifyEmail);
 router.get("/verifyOTP/:email/:otp", userController.verifyOTP);
 router.get("/passwordReset/:email/:otp/:password", userController.passwordReset);
 
