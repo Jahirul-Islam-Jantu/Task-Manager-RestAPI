@@ -3,7 +3,7 @@ import sgMail from "@sendgrid/mail";
 export const EmailSend = async (EmailTo, EmailSubject, EmailText)=>{
 
     sgMail.setApiKey(
-        "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"
+        "apikey will provided"
     );
 
     const msg = {
