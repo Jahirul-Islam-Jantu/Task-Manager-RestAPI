@@ -15,10 +15,10 @@ export const create = async (req, res) => {
 export const update = async (req, res) => {
     try{
         let email = req.headers['email']
-        let {_id} = req.params;
+        let {id} = req.params;
         let reqBody = req.body;
-        await TaskModel.updateOne({email: email, id:_id}, reqBody)
-        res.json({status: "success", message: "Task successfully"});
+        await TaskModel.updateOne({ _id:id, email: email}, reqBody)
+        res.json({status: "success", message: "Task Updated successfully"});
     }catch(err){
         res.json({status: "error", error: err});
     }
@@ -27,10 +27,9 @@ export const update = async (req, res) => {
 export const read = async (req, res) => {
     try{
         let email = req.headers['email']
-        let {_id} = req.params;
-        let reqBody = req.body;
-        await TaskModel.updateOne({email: email, id:_id}, reqBody)
-        res.json({status: "success", message: "Task successfully"});
+
+        let data =  await TaskModel.find({email: email})
+        res.json({status: "success", data: data});
     }catch(err){
         res.json({status: "error", error: err});
     }
@@ -39,10 +38,9 @@ export const read = async (req, res) => {
 export const deleteItem = async (req, res) => {
     try{
         let email = req.headers['email']
-        let {_id} = req.params;
-        let reqBody = req.body;
-        await TaskModel.updateOne({email: email, id:_id}, reqBody)
-        res.json({status: "success", message: "Task successfully"});
+        let {id} = req.params;
+        await TaskModel.deleteOne({ _id:id, email: email})
+        res.json({status: "success", message: "Task deleted successfully"});
     }catch(err){
         res.json({status: "error", error: err});
     }
