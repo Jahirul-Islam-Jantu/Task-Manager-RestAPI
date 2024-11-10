@@ -1,11 +1,12 @@
 import mongoose from 'mongoose'
 
-const dataSchema = mongoose.Schema = ({
+const dataSchema = mongoose.Schema  ({
+    email: {type: String, required: true},
     title: {type: String, required: true},
     description: {type: String, required: true},
     status: {type: String, required: true},
 }, {versionKey: false, timestamps: true});
 
-const Tasks = mongoose.model('tasks', dataSchema);
+const TaskModel = mongoose.model('tasks', dataSchema);
 
-export default Tasks;
+export default TaskModel;

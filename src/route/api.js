@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import * as userController from '../controller/UsersController.js';
+import * as TasksController from '../controller/TasksController.js';
 import {AuthMiddleware} from "../middleware/AuthMiddleware.js";
 
 
@@ -12,8 +13,15 @@ router.post("/profileUpdate",AuthMiddleware, userController.profileUpdate);
 
 router.get("/verifyEmail/:email", userController.verifyEmail);
 router.get("/verifyOTP/:email/:otp", userController.verifyOTP);
-
 router.get("/passwordReset/:email/:otp/:password", userController.passwordReset);
+
+
+// Task create, update, read, delete
+router.post("/task/create", AuthMiddleware ,  TasksController.create);
+router.post("/task/update/:id", AuthMiddleware , TasksController.update);
+router.get("/task/read",AuthMiddleware , TasksController.read);
+router.get("/task/delete/:id", AuthMiddleware ,TasksController.deleteItem);
+
 
 
 
