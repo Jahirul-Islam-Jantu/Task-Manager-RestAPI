@@ -19,6 +19,3 @@
     10. User Controller
 
 
-const key = [
-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, ND.xlsidfjglakffoasdfujawelkjdfhsdivhzkjakjfisduh, MG.lsdufgodigjvzdxkjfhnilaewuhrfsjfiasufiawhrifiuasf
-]

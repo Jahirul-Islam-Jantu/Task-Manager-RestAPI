@@ -2,9 +2,7 @@ import sgMail from "@sendgrid/mail";
 
 export const EmailSend = async (EmailTo, EmailSubject, EmailText)=>{
 
-    sgMail.setApiKey(
-        "apikey will provided"
-    );
+    // we have to use sg api key here
 
     const msg = {
         to: EmailTo,
