@@ -3,6 +3,7 @@ const router = express.Router();
 import * as userController from '../controller/UsersController.js';
 import * as TasksController from '../controller/TasksController.js';
 import {AuthMiddleware} from "../middleware/AuthMiddleware.js";
+import {PermuteController} from "../controller/PermuteController.js"
 
 
 router.post("/registration", userController.registration);
@@ -21,6 +22,10 @@ router.post("/task/create", AuthMiddleware ,  TasksController.create);
 router.post("/task/update/:id", AuthMiddleware , TasksController.update);
 router.get("/task/read",AuthMiddleware , TasksController.read);
 router.get("/task/delete/:id", AuthMiddleware ,TasksController.deleteItem);
+
+
+//Permutation
+router.get("/permutation/:str", PermuteController)
 
 
 
