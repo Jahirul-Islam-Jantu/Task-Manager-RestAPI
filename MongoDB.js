@@ -22,10 +22,20 @@ const practiceSchema = mongoose.Schema({
 // Create a model based on the schema
 const Practice = mongoose.model("Practice", practiceSchema);
 
+const AuthMiddleWare = (req, res, next) => {
+    let email = req.body.email || req.params.email;
+    if (!email) { // Check if getting email failed
+        res.status(401).json({ error: "Invalid email" });
+    } else {
+        req.email = email; // directly assign email
+        next();
+    }
+}
+
 
 
 // Example usage: inserting a document
-const Controller = async (req, res) => {
+const ControllerCreate = async (req, res) => {
     try{
         let reqBody = req.body;
         await Practice.create(reqBody);
@@ -34,9 +44,25 @@ const Controller = async (req, res) => {
         res.json({status: "error", error: err});
     }
 }
+const ControllerUpdate = async (req, res) => {
+    try{
+        let email = req.email
+        let reqBody = req.body;
+        const result = await Practice.updateOne({email: email}, reqBody)
+        if (result.matchedCount === 0){
+            res.status(404).json({ status: "error", message: "User not found" });
+        }else{
+            res.json({ status: "success", message: "User updated successfully" });
+        }
+    }catch(err){
+        res.json({status: "error", error: err});
+    }
+
+}
 
 // route
-router.post("/create", Controller)
+router.post("/create", ControllerCreate)
+router.post("/update", AuthMiddleWare, ControllerUpdate)
 app.use("/api", router)
 
 app.listen(3000, () => {
