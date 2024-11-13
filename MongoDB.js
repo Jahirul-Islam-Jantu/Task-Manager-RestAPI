@@ -1,13 +1,25 @@
 import mongoose from "mongoose";
 import express from "express";
 const router = express.Router();
+import fileUpload from "express-fileupload";
+import path from "node:path";
 
 const app = express()
 app.use(express.json())
 
+app.use(express.static("storage"))
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+    useTempFiles: true,
+    createParentPath: true
+}));
+
+
+
+
 
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://jahirul:jan742682@mernstack.tose2.mongodb.net/", { autoIndex:true })
+mongoose.connect("mongodb://localhost:27017/TaskManager", { autoIndex:true })
     .then(() => console.log("Connected to MongoDB"))
     .catch(err => console.log("Failed to connect to MongoDB:", err));
 
@@ -32,6 +44,30 @@ const AuthMiddleWare = (req, res, next) => {
     }
 }
 
+
+// express file upload
+const FileUpload = async (req, res) => {
+    // Check if files were uploaded
+    if (!req.files || !req.files['file']) {
+        return res.status(400).send({ "Upload Error": "No file uploaded" });
+    }
+
+    // Catch the file
+    const files = Array.isArray(req.files['file']) ? req.files['file'] : [req.files['file']];
+    const uploadedPaths = [];
+    for (let file of files) {
+        let myFileName = `${Math.random() * 1000}_${file.name}`;
+        let myFilePath = path.resolve(process.cwd(), "storage", myFileName);
+
+        try {
+            await file.mv(myFilePath);
+            uploadedPaths.push({ fileName: file.name, filePath: myFilePath });
+        } catch (err) {
+            return res.status(500).json({ "Upload Error": err });
+        }
+    }
+    res.status(200).json({ "Uploaded Files": uploadedPaths });
+};
 
 
 // Example usage: inserting a document
@@ -63,6 +99,7 @@ const ControllerUpdate = async (req, res) => {
 // route
 router.post("/create", ControllerCreate)
 router.post("/update", AuthMiddleWare, ControllerUpdate)
+router.post("/file", FileUpload)
 app.use("/api", router)
 
 app.listen(3000, () => {
