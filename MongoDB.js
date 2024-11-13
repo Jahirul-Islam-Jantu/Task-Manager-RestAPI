@@ -7,7 +7,9 @@ import path from "node:path";
 const app = express()
 app.use(express.json())
 
-app.use(express.static("storage"))
+// Serve static files from the "storage" folder at the "/get-file" path
+app.use("/get-file", express.static(path.join(process.cwd(), "storage")));
+
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
     useTempFiles: true,
