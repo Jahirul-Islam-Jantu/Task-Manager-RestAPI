@@ -3,9 +3,17 @@ import express from "express";
 const router = express.Router();
 import fileUpload from "express-fileupload";
 import path from "node:path";
+import fs from "fs";
+import cors from "cors";
+
+if (!fs.existsSync(path.join(process.cwd(), "storage"))) {
+    fs.mkdirSync(path.join(process.cwd(), "storage"));
+}
 
 const app = express()
 app.use(express.json())
+app.use(cors());
+
 
 // Serve static files from the "storage" folder at the "/get-file" path
 app.use("/get-file", express.static(path.join(process.cwd(), "storage")));
