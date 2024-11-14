@@ -6,6 +6,7 @@ import path from "node:path";
 import fs from "fs";
 import cors from "cors";
 
+
 if (!fs.existsSync(path.join(process.cwd(), "storage"))) {
     fs.mkdirSync(path.join(process.cwd(), "storage"));
 }
@@ -106,9 +107,20 @@ const ControllerUpdate = async (req, res) => {
 
 }
 
+const ControllerDetails = async (req, res) => {
+    try{
+
+        let user = await Practice.find()
+        res.json({status: "success", data: user});
+    }catch(err){
+        res.json({status: "error", error: err});
+    }
+}
+
 // route
 router.post("/create", ControllerCreate)
 router.post("/update", AuthMiddleWare, ControllerUpdate)
+router.get("/details", ControllerDetails)
 router.post("/file", FileUpload)
 app.use("/api", router)
 
