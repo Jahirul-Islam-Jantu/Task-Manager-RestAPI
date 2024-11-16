@@ -5,6 +5,7 @@ import fileUpload from "express-fileupload";
 import path from "node:path";
 import fs from "fs";
 import cors from "cors";
+import {EncodeToken} from "./src/utility/JWTTokenHelper.js";
 
 
 if (!fs.existsSync(path.join(process.cwd(), "storage"))) {
@@ -41,6 +42,7 @@ const practiceSchema = mongoose.Schema({
     name: String,
     age: Number,
     hobby: String,
+    password: String,
 });
 
 // Create a model based on the schema
@@ -113,6 +115,21 @@ const ControllerUpdate = async (req, res) => {
     }
 
 }
+const controllerLogin = async (req, res) => {
+    try{
+        let reqBody = req.body;
+        let user = await Practice.findOne(reqBody)
+
+        if (user.length > 0){
+            const token = EncodeToken(user[0].email, user[0]._id);
+            res.json({status: "success", data: reqBody, token: token});
+        }
+
+    }catch(err){
+        res.json({status: "error", error: err});
+    }
+
+}
 
 const ControllerDetails = async (req, res) => {
     try{
@@ -152,6 +169,7 @@ const ControllerDelete = async (req, res) => {
 router.post("/create", ControllerCreate)
 router.post("/update", AuthMiddleWare, ControllerUpdate)
 router.get("/details", ControllerDetails)
+router.post("/login", controllerLogin)
 router.delete("/delete/:id",AuthMiddleWare, ControllerDelete)
 router.post("/file", FileUpload)
 app.use("/api", router)
