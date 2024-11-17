@@ -120,8 +120,8 @@ const controllerLogin = async (req, res) => {
         let reqBody = req.body;
         let user = await Practice.findOne(reqBody)
 
-        if (user.length > 0){
-            const token = EncodeToken(user[0].email, user[0]._id);
+        if (user ){
+            const token = EncodeToken(user.email, user._id);
             res.json({status: "success", data: reqBody, token: token});
         }
 
