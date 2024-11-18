@@ -69,6 +69,9 @@ const ReadUser = async (req, res) => {
     }
 }
 
+// read single user
+
+
 
 
 
@@ -96,15 +99,27 @@ const CreateProduct = async (req, res) => {
 
 // Product Controller for read
 
+const ReadProducts = async (req, res) => {
+    try{
+        let result = await ProductModel.find()
+        res.status(200).json({status: "success", data: result});
+    }catch(err){
+        res.status(400).json({status: "error", error: err});
+    }
+}
+
 
 
 
 
 // making routes
-
+// Users
 router.post("/register", Registration);
 router.get("/readUser", ReadUser)
+
+// Products
 router.post("/createProduct", CreateProduct);
+router.get("/readProducts", ReadProducts);
 
 
 app.listen(5522, () => console.log("Listening on port 5522"));
