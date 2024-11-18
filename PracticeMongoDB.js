@@ -57,8 +57,24 @@ const InsertData = mongoose.Schema({
     email: {type: String, unique: true, required: true},
     password: {type: String, required: true},
     name: {type: String, required: true},
-    age: {type: Number, required: true},
+    age: {
+        type: Number,
+        required: true,
+        min: [18, "Age must be at least 18"],
+        max: [30, "Age must be no more than 30"]
+    },
     address: {type: String, required: true},
+    mobile: {
+        type: String,
+        required: true,
+        unique: true,
+        validate: {
+            validator: function (value) {
+                return value.length === 11;
+            },
+            message: "Mobile number must be 11 digits"
+        }
+    }
 }, {versionKey: false, timestamps: true});
 
 const DataModel = mongoose.model("mongoPractice", InsertData);
