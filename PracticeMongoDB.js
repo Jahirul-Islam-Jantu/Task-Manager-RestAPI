@@ -38,10 +38,11 @@ const ProductDetails = mongoose.Schema({
     price: {type: Number, required: true},
 }, {versionKey: false, timestamps: true});
 
-co
+const ProductModel = mongoose.model("products", ProductDetails);
 
 
-// Data Controller for server request creating
+
+// Data Controller for server request create
 const Registration = async (req, res) => {
     try{
         let reqBody = req.body;
@@ -56,17 +57,54 @@ const Registration = async (req, res) => {
         res.status(400).json({status: "error", error: err});
     }
 }
+// Data Controller for server request read
 
-const Product = async (req, res) => {
-
+const ReadUser = async (req, res) => {
+    try{
+        let user = await DataModel.find()
+        res.status(200).json({status: "success", data: user});
+    }
+    catch(err){
+        res.status(400).json({status: "error", error: err});
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+// Product Controller for create
+const CreateProduct = async (req, res) => {
+    try{
+        let reqBody = req.body;
+        let result =  await ProductModel.create(reqBody);
+        if (!result){
+            res.status(404).send({message:"Product not found"});
+        }else{
+            res.json({status:"success", data: result});
+        }
+    }catch(err){
+        res.status(400).json({status: "error", error: err});
+    }
+}
+
+// Product Controller for read
+
+
 
 
 
 // making routes
 
 router.post("/register", Registration);
-
+router.get("/readUser", ReadUser)
+router.post("/createProduct", CreateProduct);
 
 
 app.listen(5522, () => console.log("Listening on port 5522"));
