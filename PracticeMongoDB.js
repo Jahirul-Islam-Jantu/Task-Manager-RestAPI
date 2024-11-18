@@ -135,6 +135,17 @@ const UpdateUser = async (req, res) => {
     }
 }
 
+const DeleteUser = async (req, res) => {
+    try{
+        let id = req.params.id
+        await DataModel.deleteOne({_id: id})
+        res.status(200).json({status: "success", message: "successfully deleted"});
+    }
+    catch(err){
+        res.status(400).json({status: "error", error: err});
+    }
+}
+
 
 
 
@@ -215,12 +226,14 @@ router.post("/register", Registration);
 router.get("/readUser", ReadUser)
 router.get("/singleUser/:email",AuthMiddlewareForUser, ReadSingleUser)
 router.post("/updateUser/:id",  UpdateUser)
+router.delete("/deleteUser/:id", DeleteUser)
 
 // Products
 router.post("/createProduct", CreateProduct);
 router.get("/readProducts", ReadProducts);
 router.get("/readProduct/:id",AuthMiddlewareForProduct, SingleProduct);
 router.post("/updateProduct/:id",  UpdateProduct);
+router.get("/deleteProduct/:id", DeleteProduct)
 
 
 app.listen(5522, () => console.log("Listening on port 5522"));
