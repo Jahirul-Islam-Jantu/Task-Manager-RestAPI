@@ -20,7 +20,7 @@ mongoose.connect("mongodb://localhost:27017/TaskManager", { autoIndex:true })
 
 
 // Middleware
-const AuthMiddleware = (req, res, next) => {
+const AuthMiddlewareForUser = (req, res, next) => {
     try{
         let email = req.body.email || req.email || req.params.email || req.headers['email']
         let id = req.params._id || req._id || req.headers['_id'] || req.body._id;
@@ -35,6 +35,19 @@ const AuthMiddleware = (req, res, next) => {
         next()
     }catch(err){
         res.status(401).send("Authorization failed with this email or password");
+    }
+}
+
+const AuthMiddlewareForProduct = (req, res, next) => {
+    try{
+        let id = req.params.id || req.id || req.headers['id'] || req.body.id;
+        if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+            res.status(403).send("Invalid id!");
+        }else{
+            next()
+        }
+    }catch(err){
+        res.status(403).send("Authorization failed with this Product ID");
     }
 }
 
@@ -105,6 +118,22 @@ const ReadSingleUser = async (req, res) => {
         res.status(400).json({status: "error", error: err});
     }
 }
+// update single user
+
+const UpdateUser = async (req, res) => {
+    try{
+        let id = req.params.id
+        let reqBody = req.body;
+        let result = await DataModel.updateOne({_id: id}, reqBody)
+        if (!result){
+            res.status(404).send({message:"ID for user not found"});
+        }else{
+            res.status(200).json({status: "success", data: result});
+        }
+    }catch(err){
+        res.status(400).json({status: "error", error: err});
+    }
+}
 
 
 
@@ -142,19 +171,39 @@ const ReadProducts = async (req, res) => {
     }
 }
 
+// read single item
+
+const SingleProduct = async (req, res) => {
+    try{
+        let id = req.params.id
+        let result = await ProductModel.findById(id);
+        if(!result){
+            res.status(404).send({message:"Product not found"});
+        }else{
+            res.status(200).json({status: "success", data: result});
+        }
+
+    }catch (err){
+        res.status(400).json({status: "error", error: err});
+    }
+}
+
 
 
 
 
 // making routes
+
 // Users
 router.post("/register", Registration);
 router.get("/readUser", ReadUser)
-router.get("/singleUser/:email",AuthMiddleware, ReadSingleUser)
+router.get("/singleUser/:email",AuthMiddlewareForUser, ReadSingleUser)
+router.post("/updateUser/:id",  UpdateUser)
 
 // Products
 router.post("/createProduct", CreateProduct);
 router.get("/readProducts", ReadProducts);
+router.get("/readProduct/:id",AuthMiddlewareForProduct, SingleProduct);
 
 
 app.listen(5522, () => console.log("Listening on port 5522"));
