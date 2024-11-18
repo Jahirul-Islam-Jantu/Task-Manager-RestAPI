@@ -18,6 +18,27 @@ mongoose.connect("mongodb://localhost:27017/TaskManager", { autoIndex:true })
     .catch(err => console.log("Failed to connect to MongoDB:", err));
 
 
+
+// Middleware
+const AuthMiddleware = (req, res, next) => {
+    try{
+        let email = req.body.email || req.email || req.params.email || req.headers['email']
+        let id = req.params._id || req._id || req.headers['_id'] || req.body._id;
+        if (!email || !id) {
+            res.status(403).send("Email or ID is required");
+        }
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            res.status(403).send("Invalid id!");
+        }
+        req.email = email
+        req._id = id
+        next()
+    }catch(err){
+        res.status(401).send("Authorization failed with this email or password");
+    }
+}
+
+
 // MongoDB Schema and data model creating
 const InsertData = mongoose.Schema({
     email: {type: String, unique: true, required: true},
@@ -70,7 +91,20 @@ const ReadUser = async (req, res) => {
 }
 
 // read single user
-
+const ReadSingleUser = async (req, res) => {
+    try{
+        let email = req.email;
+        let id = req._id
+        let result = await DataModel.findOne({email: email, _id: id})
+        if(!result){
+            res.status(404).send({message:"result for user not found"});
+        }else{
+            res.status(200).json({status: "success", data: result});
+        }
+    }catch(err){
+        res.status(400).json({status: "error", error: err});
+    }
+}
 
 
 
@@ -116,6 +150,7 @@ const ReadProducts = async (req, res) => {
 // Users
 router.post("/register", Registration);
 router.get("/readUser", ReadUser)
+router.get("/singleUser/:email",AuthMiddleware, ReadSingleUser)
 
 // Products
 router.post("/createProduct", CreateProduct);
