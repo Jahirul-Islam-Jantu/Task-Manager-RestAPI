@@ -188,6 +188,22 @@ const SingleProduct = async (req, res) => {
     }
 }
 
+// update single product by id
+const UpdateProduct = async (req, res) => {
+    try{
+        let id = req.params.id
+        let reqBody = req.body;
+        let result =  await ProductModel.updateOne({_id: id}, reqBody);
+        if (!result){
+            res.status(404).send({message:"Product not found"});
+        }else{
+            res.status(200).json({status: "success", data: result});
+        }
+    }catch(err){
+        res.status(400).json({status: "error", error: err});
+    }
+}
+
 
 
 
@@ -204,6 +220,7 @@ router.post("/updateUser/:id",  UpdateUser)
 router.post("/createProduct", CreateProduct);
 router.get("/readProducts", ReadProducts);
 router.get("/readProduct/:id",AuthMiddlewareForProduct, SingleProduct);
+router.post("/updateProduct/:id",  UpdateProduct);
 
 
 app.listen(5522, () => console.log("Listening on port 5522"));
