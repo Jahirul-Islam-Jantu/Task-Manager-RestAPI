@@ -5,7 +5,7 @@ const TodoListModel = mongoose.Schema({
     TodoDescription: {type: String, required: true},
     TodoStatus: {type: String, default: "New"},
     TodoDate: {type: Date, default: Date.now},
-})
+}, {versionKey: false, timestamps: true});
 
 const TodoModel = mongoose.model('Todo', TodoListModel);
 export default TodoModel;

@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 import * as userController from '../controller/UsersController.js';
 import * as TasksController from '../controller/TasksController.js';
+import * as TodoController from "../controller/ToDoController.js"
 import {AuthMiddleware} from "../middleware/AuthMiddleware.js";
 import {PermuteController} from "../controller/PermuteController.js"
 
@@ -27,6 +28,8 @@ router.get("/task/delete/:id", AuthMiddleware ,TasksController.deleteItem);
 //Permutation
 router.get("/permutation/:str", PermuteController)
 
+//Todo app routes
+router.post("/createtodo", TodoController.CreateTodo)
 
 
 
