@@ -74,7 +74,12 @@ const InsertData = mongoose.Schema({
             },
             message: "Mobile number must be 11 digits"
         }
-    }
+    },
+    phoneNumber: {type: String, required: true, validate: {
+        validator: function (value) {
+            return /^01[3-9]\d{8}$/.test(value)
+        }, message: "Invalid BD Phone Number"
+        }},
 }, {versionKey: false, timestamps: true});
 
 const DataModel = mongoose.model("mongoPractice", InsertData);
