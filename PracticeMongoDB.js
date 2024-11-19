@@ -1,10 +1,13 @@
+// Basic Packages Import
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 const router = express.Router();
 
-
+// Create Express app instance
 const app = express();
+
+// global middleware
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -100,8 +103,13 @@ const ProductModel = mongoose.model("products", ProductDetails);
 // Data Controller for server request create
 const Registration = async (req, res) => {
     try{
+        //catch the request
         let reqBody = req.body;
-        let result =  await DataModel.create(reqBody);
+
+        // request process
+        let result =  await DataModel.create(reqBody); // create method to create a user or create any item from mongoose model.
+
+        // response block
         if (!result){
             res.status(404).send({message:"Registration failed"});
         }else {
@@ -116,7 +124,10 @@ const Registration = async (req, res) => {
 
 const ReadUser = async (req, res) => {
     try{
-        let user = await DataModel.find()
+        // request processing
+        let user = await DataModel.find() // find method to read all user from database
+
+        // response against request
         res.status(200).json({status: "success", data: user});
     }
     catch(err){
