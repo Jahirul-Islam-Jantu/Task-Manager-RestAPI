@@ -3,7 +3,19 @@ import TodoModel from "../model/TodoListModel.js";
 export const CreateTodo =async (req, res) => {
     try{
         let reqBody = req.body;
-        let todo = await TodoModel.create(reqBody);
+        let TodoSubject = reqBody['TodoSubject']
+        let TodoDescription = reqBody['TodoDescription']
+        let userName = req.headers['username']
+        let TodoStatus = "New"
+        let TodoCreateDate = Date.now()
+        let PostBody = {
+            Username: userName,
+            TodoSubject: TodoSubject,
+            TodoDescription: TodoDescription,
+            TodoStatus: TodoStatus,
+            TodoDate: TodoCreateDate,
+        }
+        let todo = await TodoModel.create(PostBody);
         if (todo){
             res.status(200).json({todo: todo});
         }else{

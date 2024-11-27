@@ -29,7 +29,7 @@ router.get("/task/delete/:id", AuthMiddleware ,TasksController.deleteItem);
 router.get("/permutation/:str", PermuteController)
 
 //Todo app routes
-router.post("/createtodo", TodoController.CreateTodo)
+router.post("/createtodo",AuthMiddleware, TodoController.CreateTodo)
 router.get("/readTodo", TodoController.ReadTodos)
 
 
