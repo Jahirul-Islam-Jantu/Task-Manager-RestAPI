@@ -30,6 +30,7 @@ router.get("/permutation/:str", PermuteController)
 
 //Todo app routes
 router.post("/createtodo", TodoController.CreateTodo)
+router.get("/readTodo", TodoController.ReadTodos)
 
 
 
