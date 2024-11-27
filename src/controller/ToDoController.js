@@ -28,7 +28,8 @@ export const CreateTodo =async (req, res) => {
 
 export const ReadTodos = async (req, res) => {
     try{
-        const result = await TodoModel.find()
+        let email= req.headers['email']
+        const result = await TodoModel.find({email})
         res.status(200).json({status: "success", message: result});
     }catch(err){
         res.status(400).json({status: "error", error: err});
