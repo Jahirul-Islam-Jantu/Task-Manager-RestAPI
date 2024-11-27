@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 const TodoListModel = mongoose.Schema({
-    Username: {type: String},
+    email: {type: String},
     TodoSubject: {type: String, required: true},
     TodoDescription: {type: String, required: true},
     TodoStatus: {type: String, default: "New"},

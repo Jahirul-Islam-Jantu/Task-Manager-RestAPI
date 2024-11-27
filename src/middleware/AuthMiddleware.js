@@ -1,4 +1,15 @@
 import {DecodeToken} from "../utility/JWTTokenHelper.js";
+export const AuthMiddleware = (req, res, next) => {
+    let token = req.headers["token"];
+    let decodeToken = DecodeToken(token);
+
+    if (!decodeToken) { // Check if decoding failed
+        res.status(401).json({ error: "Invalid or expired token" });
+    } else {
+        req.headers.email = decodeToken.email; // directly assign email
+        next();
+    }
+};
 // import error from "jsonwebtoken/lib/JsonWebTokenError.js";
 //
 // export const AuthMiddleware =  (req, res, next) => {
@@ -14,14 +25,3 @@ import {DecodeToken} from "../utility/JWTTokenHelper.js";
 //     }
 // }
 
-export const AuthMiddleware = (req, res, next) => {
-    let token = req.headers["token"];
-    let decodeToken = DecodeToken(token);
-
-    if (!decodeToken) { // Check if decoding failed
-        res.status(401).json({ error: "Invalid or expired token" });
-    } else {
-        req.headers.email = decodeToken.email; // directly assign email
-        next();
-    }
-};

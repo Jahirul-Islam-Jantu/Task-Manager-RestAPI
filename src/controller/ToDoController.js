@@ -5,11 +5,11 @@ export const CreateTodo =async (req, res) => {
         let reqBody = req.body;
         let TodoSubject = reqBody['TodoSubject']
         let TodoDescription = reqBody['TodoDescription']
-        let userName = req.headers['username']
+        let email = req.headers['email']
         let TodoStatus = "New"
         let TodoCreateDate = Date.now()
         let PostBody = {
-            Username: userName,
+            email: email,
             TodoSubject: TodoSubject,
             TodoDescription: TodoDescription,
             TodoStatus: TodoStatus,
