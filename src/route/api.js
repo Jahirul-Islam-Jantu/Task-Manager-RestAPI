@@ -31,6 +31,7 @@ router.get("/permutation/:str", PermuteController)
 //Todo app routes
 router.post("/createtodo",AuthMiddleware, TodoController.CreateTodo)
 router.get("/readTodo",AuthMiddleware, TodoController.ReadTodos)
+router.post("/updateTodo", AuthMiddleware, TodoController.UpdateTodo);
 
 
 

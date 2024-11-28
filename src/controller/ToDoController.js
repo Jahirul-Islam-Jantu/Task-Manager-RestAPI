@@ -35,3 +35,17 @@ export const ReadTodos = async (req, res) => {
         res.status(400).json({status: "error", error: err});
     }
 }
+export const UpdateTodo = async (req, res) => {
+    try{
+        let email= req.headers['email']
+        let reqBody = req.body;
+        const updateBody = await TodoModel.updateOne({email}, reqBody)
+        if (!updateBody){
+            res.status(404).send({message:"Todo not found"});
+        }else{
+            res.status(200).json({status: "success", data: updateBody});
+        }
+    }catch(err){
+        res.status(400).json({status: "error", error: err});
+    }
+}
