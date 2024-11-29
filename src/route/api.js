@@ -32,6 +32,7 @@ router.get("/permutation/:str", PermuteController)
 router.post("/createtodo",AuthMiddleware, TodoController.CreateTodo)
 router.get("/readTodo",AuthMiddleware, TodoController.ReadTodos)
 router.post("/updateTodo", AuthMiddleware, TodoController.UpdateTodo);
+router.delete("/deleteTodo", AuthMiddleware, TodoController.DeleteTodo);
 
 
 

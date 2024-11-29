@@ -49,3 +49,13 @@ export const UpdateTodo = async (req, res) => {
         res.status(400).json({status: "error", error: err});
     }
 }
+
+export const DeleteTodo = async (req, res) => {
+    try{
+        let email= req.headers['email']
+        await TodoModel.deleteOne({email})
+        res.status(200).json({status: "success"});
+    }catch(err){
+        res.status(400).json({status: "error", error: err});
+    }
+}
