@@ -1,4 +1,5 @@
 import TodoModel from "../model/TodoListModel.js";
+import UserModel from "../model/UsersModel.js";
 
 export const CreateTodo =async (req, res) => {
     try{
@@ -57,5 +58,18 @@ export const DeleteTodo = async (req, res) => {
         res.status(200).json({status: "success"});
     }catch(err){
         res.status(400).json({status: "error", error: err});
+    }
+}
+export const findSingleUser = async (req, res) => {
+    try{
+        let email= req.headers['email']
+        let user = await UserModel.findOne({email})
+        if(user){
+            res.status(200).json({status: "success", data: user});
+        }else{
+            res.status(404).send({message:"User not found"});
+        }
+    }catch(err){
+        res.status(400).json({status:"error", error: err});
     }
 }
