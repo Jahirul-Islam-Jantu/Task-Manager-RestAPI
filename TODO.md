@@ -19,5 +19,7 @@
     10. User Controller
     11. creating ToDo methods
     12. Making some routes randomly
+    13. Create todo with specific users assigned email
+    14. 
 
 
