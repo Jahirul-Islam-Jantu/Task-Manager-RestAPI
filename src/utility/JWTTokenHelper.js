@@ -9,6 +9,7 @@ export const EncodeToken = (email, user_id) => {
     return jwt.sign(PAYLOAD, KEY, EXPIRE)
 }
 
+
 export const DecodeToken = (token) => {
     try {
         const KEY = JWT_Secret; // Use JWT_Secret consistently
